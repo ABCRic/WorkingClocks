@@ -1,0 +1,8 @@
+name: WorkingClocks
+main: me.abcric.bukkit.workingclocks.WorkingClocks
+version: 1.0
+author: ABCRic
+permissions:
+    WorkingClocks.use:
+        description: Allows the user to use clocks to see the time
+        default: true
