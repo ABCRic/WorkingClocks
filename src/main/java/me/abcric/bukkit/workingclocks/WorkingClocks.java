@@ -31,9 +31,8 @@ public class WorkingClocks extends JavaPlugin implements Listener {
 
 		if (isHoldingClock(e.getPlayer()) && e.getPlayer().hasPermission("WorkingClocks.use")) {
 			long time = e.getPlayer().getWorld().getTime();
-			String message = ChatColor.YELLOW + "You look at your clock... It's "
-			               + (getConfig().getBoolean("clock-12h", false) ? ticksTo12h(time) : ticksTo24h(time))
-			               + ".";
+			String template = getConfig().getString("message", "You look at your clock... It's %time%.");
+			String message = ChatColor.YELLOW + template.replace("%time%", getConfig().getBoolean("clock-12h", false) ? ticksTo12h(time) : ticksTo24h(time));
 			e.getPlayer().sendMessage(message);
 		}
 	}

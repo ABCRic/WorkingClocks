@@ -1,1 +1,2 @@
 clock-12h: false
+message: "You look at your clock... It's %time%."
