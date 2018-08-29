@@ -1,6 +1,6 @@
 name: WorkingClocks
 main: me.abcric.bukkit.workingclocks.WorkingClocks
-version: 1.0
+version: 1.1
 author: ABCRic
 permissions:
     WorkingClocks.use:
