@@ -2,11 +2,11 @@ package me.abcric.bukkit.workingclocks;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class WorkingClocks extends JavaPlugin implements Listener {
@@ -29,17 +29,26 @@ public class WorkingClocks extends JavaPlugin implements Listener {
 		if (e.getAction() != Action.RIGHT_CLICK_AIR && e.getAction() != Action.RIGHT_CLICK_BLOCK)
 			return;
 
-		if (isHoldingClock(e.getPlayer()) && e.getPlayer().hasPermission("WorkingClocks.use")) {
+		if (isClockEvent(e) && e.getPlayer().hasPermission("WorkingClocks.use")) {
 			long time = e.getPlayer().getWorld().getTime();
 			String template = getConfig().getString("message", "You look at your clock... It's %time%.");
 			String message = ChatColor.YELLOW + template.replace("%time%", getConfig().getBoolean("clock-12h", false) ? ticksTo12h(time) : ticksTo24h(time));
 			e.getPlayer().sendMessage(message);
 		}
 	}
-
-	private boolean isHoldingClock(Player p) {
-		return p.getInventory().getItemInMainHand().getType() == Material.WATCH
-		    || p.getInventory().getItemInOffHand().getType() == Material.WATCH;
+	
+	private boolean isClockEvent(PlayerInteractEvent e) {
+		// Event gets triggered twice when dealing with blocks, once for each hand.
+		// We check if the event we're handling corresponds to a clock in hand to avoid duplicate messages.
+		// (messages will still be duplicate if the player is holding two clocks but that's on them, really)
+		switch (e.getHand()) {
+		case HAND:
+			return e.getPlayer().getInventory().getItemInMainHand().getType() == Material.WATCH;
+		case OFF_HAND:
+			return e.getPlayer().getInventory().getItemInOffHand().getType() == Material.WATCH;
+		default:
+			return false;
+		}
 	}
 	
 	public static String ticksTo24h(long ticks) {
