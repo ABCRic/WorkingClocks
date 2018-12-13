@@ -42,9 +42,9 @@ public class WorkingClocks extends JavaPlugin implements Listener {
 		// (messages will still be duplicate if the player is holding two clocks but that's on them, really)
 		switch (e.getHand()) {
 		case HAND:
-			return e.getPlayer().getInventory().getItemInMainHand().getType() == Material.WATCH;
+			return e.getPlayer().getInventory().getItemInMainHand().getType() == Material.CLOCK;
 		case OFF_HAND:
-			return e.getPlayer().getInventory().getItemInOffHand().getType() == Material.WATCH;
+			return e.getPlayer().getInventory().getItemInOffHand().getType() == Material.CLOCK;
 		default:
 			return false;
 		}
